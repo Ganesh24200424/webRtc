@@ -3,10 +3,14 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'path';
-
+import "dotenv/config";
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: "*"
+    }
+});
 const allusers = {};
 
 // /your/system/path
@@ -75,6 +79,7 @@ io.on("connection", (socket) => {
 
 })
 
-server.listen(5000, () => {
-    console.log(`Server listening on port 5000`);
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+    console.log("Server running on port", PORT);
 });
